@@ -18,4 +18,5 @@ public class TransactionDTO {
     private Long merchantId;
     private Double amountCents;
     private Date date;
+
 }

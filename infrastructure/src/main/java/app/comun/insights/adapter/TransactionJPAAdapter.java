@@ -48,7 +48,7 @@ public class TransactionJPAAdapter implements TransactionPersistencePort {
     @Override
     public List<TransactionDTO> findTransactionsByCustomerId(Long customerId) {
 
-        return TransactionMapper.INSTANCE.transactionEntityListToTransactionDTOList(transactionRepository.findTransactionEntitiesByCustomerId(customerId));
-
+        return TransactionMapper.INSTANCE
+                .transactionEntityListToTransactionDTOList(transactionRepository.findTransactionEntitiesByCustomerId(customerId));
     }
 }

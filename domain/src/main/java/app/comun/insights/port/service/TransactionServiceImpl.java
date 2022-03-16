@@ -5,6 +5,7 @@ import app.comun.insights.domain.TransactionDTO;
 import app.comun.insights.port.infrastructure.TransactionPersistencePort;
 import app.comun.insights.port.userinterface.TransactionServicePort;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -36,17 +37,27 @@ public class TransactionServiceImpl implements TransactionServicePort {
     @Override
     public List<CardSpendMerchant> findTopCardSpendCategoriesByCustomerId(Long customerId, Optional<Integer> limitMerchant, Optional<Integer> dayAgo) {
 
-        // Get all transaction by Customer Id and apply limit if there is limit Merchant value
-        List<TransactionDTO> transactions = limitMerchant.map(n -> transactionPersistencePort
-                .findTransactionsByCustomerId(customerId)
-                .stream()
-                .limit(n)
-                .collect(Collectors.toList())).orElseGet(() -> transactionPersistencePort.findTransactionsByCustomerId(customerId));
+        // Get all transaction by Customer Id
+        List<TransactionDTO> transactionDTOList = transactionPersistencePort.findTransactionsByCustomerId(customerId);
 
-        return summaryCardSpendByMerchant(transactions);
+        List<CardSpendMerchant> spendMerchantList = summaryCardSpendByMerchant(transactionDTOList);
+
+        // and apply limit if there is limit Merchant value
+        return limitMerchant.map(n -> spendMerchantList
+                        .stream()
+                        .sorted(Comparator.reverseOrder())
+                        .limit(n)
+                        .collect(Collectors.toList())
+                ).orElseGet(
+                        () -> spendMerchantList
+                                .stream()
+                                .sorted(Comparator.reverseOrder())
+                                .collect(Collectors.toList())
+        );
     }
 
     private List<CardSpendMerchant> summaryCardSpendByMerchant(List<TransactionDTO> transactions) {
+
         // Group by Merchant and sum
         Map<Long, Double> sumByMerchantID = transactions.stream().collect(Collectors.groupingBy(
                 TransactionDTO::getMerchantId,
@@ -54,7 +65,6 @@ public class TransactionServiceImpl implements TransactionServicePort {
         );
 
         return sumByMerchantID.entrySet().stream()
-                .sorted()
                 .map(m -> CardSpendMerchant.builder()
                         .merchant(m.getKey())
                         .amount(m.getValue())
