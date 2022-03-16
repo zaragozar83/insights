@@ -9,8 +9,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardSpendMerchant {
+public class CardSpendMerchant implements Comparable<CardSpendMerchant>{
 
     private Long merchant;
     private Double amount;
+
+    @Override
+    public int compareTo(CardSpendMerchant o) {
+
+        if (amount == null)
+            return 0;
+        return amount.compareTo(o.amount);
+    }
 }
