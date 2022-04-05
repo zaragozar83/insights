@@ -35,7 +35,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionDTO> findTransactionById(@PathVariable Long id) {
+    public ResponseEntity<TransactionDTO> findTransactionById(@PathVariable String id) {
         return ResponseEntity.ok(transactionServicePort.getTransactionById(id));
     }
 

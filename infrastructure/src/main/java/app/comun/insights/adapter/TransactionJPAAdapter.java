@@ -36,7 +36,7 @@ public class TransactionJPAAdapter implements TransactionPersistencePort {
     }
 
     @Override
-    public TransactionDTO getTransactionById(Long transactionId) {
+    public TransactionDTO getTransactionById(String transactionId) {
 
         Optional<TransactionEntity> maybeTransaction = transactionRepository.findById(transactionId);
 

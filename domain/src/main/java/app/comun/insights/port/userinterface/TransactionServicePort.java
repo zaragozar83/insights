@@ -10,6 +10,6 @@ public interface TransactionServicePort {
 
     TransactionDTO saveTransaction(TransactionDTO transactionDTO);
     List<TransactionDTO> getTransactions();
-    TransactionDTO getTransactionById(Long transactionId);
+    TransactionDTO getTransactionById(String transactionId);
     List<CardSpendMerchant> findTopCardSpendCategoriesByCustomerId(Long customerId, Optional<Integer> limitMerchant, Optional<Integer> dayAgo);
 }

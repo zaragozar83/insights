@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class TransactionDTO {
 
-    private Long id;
+    private String id;
     private Long customerId;
     private Long merchantId;
     private Double amountCents;

@@ -30,7 +30,7 @@ public class TransactionServiceImpl implements TransactionServicePort {
     }
 
     @Override
-    public TransactionDTO getTransactionById(Long transactionId) {
+    public TransactionDTO getTransactionById(String transactionId) {
         return transactionPersistencePort.getTransactionById(transactionId);
     }
 
